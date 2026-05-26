@@ -1,110 +1,190 @@
-Este é um projeto [**React Native**](https://reactnative.dev), inicializado com o [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+<div align="center">
+    <img src="https://raw.githubusercontent.com/Vitryne/.github/main/assets/logotipoGradiente.png" width="280" />
+    <h1>Aplicativo mobile da plataforma Vitryne</h1>
+    <p>Catálogo, compras e rastreamento de pedidos para consumidores — gestão de entregas para entregadores.</p>
+    <br>
 
-# Começando
+[![Mobile](https://skillicons.dev/icons?i=react,ts,docker)](https://skillicons.dev)
+</div>
 
-> **Atenção**: Antes de continuar, certifique-se de ter concluído o guia [Configurando seu Ambiente](https://reactnative.dev/docs/set-up-your-environment).
+---
 
-## Passo 1: Instalar as dependências
+## Sobre
 
-A partir da raiz do projeto, instale as dependências:
+O `vitryne-mobile` é o aplicativo mobile da plataforma Vitryne, desenvolvido com React Native e Expo. Serve dois perfis distintos com interfaces separadas:
 
-```sh
-# Usando npm
+- **Consumidor** — onboarding, catálogo de lojas locais, busca por proximidade, carrinho, checkout, acompanhamento de pedidos em tempo real e perfil.
+- **Entregador** — disponibilidade online/offline, recebimento e aceite de entregas, confirmação de coleta e entrega com validação por geofencing e histórico de ganhos.
+
+A interface consome a API REST do [`vitryne-backend`](https://github.com/Vitryne/vitryne-backend) e se comunica via WebSocket para atualizações em tempo real de status de pedido e rastreamento.
+
+---
+
+## Stack
+
+| Camada | Tecnologia |
+|---|---|
+| Framework | React Native + Expo (SDK 52+) |
+| Linguagem | TypeScript |
+| Navegação | Expo Router (file-based routing) |
+| Fonte | Poppins — `@expo-google-fonts/poppins` |
+| Requisições HTTP | Axios |
+| Tempo real | WebSocket (nativo) |
+| Notificações push | Expo Notifications + FCM |
+
+---
+
+## Pré-requisitos
+
+- [Node.js 20+](https://nodejs.org/)
+- [npm](https://www.npmjs.com/) ou [yarn](https://yarnpkg.com/)
+- [Expo CLI](https://docs.expo.dev/more/expo-cli/) — `npm install -g expo-cli`
+- [Expo Go](https://expo.dev/go) no dispositivo físico *(para desenvolvimento rápido)*
+- Emulador Android (Android Studio) ou Simulador iOS (Xcode) *(opcional)*
+- [`vitryne-backend`](https://github.com/Vitryne/vitryne-backend) rodando localmente ou em staging
+
+---
+
+## Instalação
+
+```bash
+# Clone o repositório
+git clone https://github.com/Vitryne/vitryne-mobile.git
+cd vitryne-mobile
+
+# Instale as dependências
 npm install
 
-# OU usando Yarn
-yarn install
-```
-
-## Passo 2: Iniciar o Metro
-
-O **Metro** é o empacotador (bundler) JavaScript do React Native. A partir da raiz do projeto, rode:
-
-```sh
-# Usando npm
-npm start
-
-# OU usando Yarn
-yarn start
-```
-
-Deixe esse terminal aberto e abra uma nova aba/janela para os próximos passos.
-
-## Passo 3: Rodar o app
-
-Com o Metro rodando, em um novo terminal execute o comando de acordo com a plataforma:
-
-### Android
-
-```sh
-# Usando npm
+# Para iniciar o programa
 npm run android
-
-# OU usando Yarn
-yarn android
 ```
 
-### iOS
+Com o servidor rodando, escaneie o QR Code com o **Expo Go** no celular ou pressione:
 
-No iOS, instale as dependências do CocoaPods (necessário no primeiro clone ou após atualizar dependências nativas):
+- `a` para abrir no emulador Android
+- `i` para abrir no simulador iOS
 
-```sh
-# Apenas na primeira vez, instala o próprio CocoaPods
-bundle install
+---
 
-# Sempre que atualizar dependências nativas
-bundle exec pod install
+## Variáveis de Ambiente
+
+Crie um arquivo `.env` na raiz do projeto com base no `.env.example`:
+
+```env
+# URL base da API
+EXPO_PUBLIC_API_URL=http://192.168.x.x:8080/api/v1
+
+# URL do WebSocket
+EXPO_PUBLIC_WS_URL=ws://192.168.x.x:8080/ws
+
+# Gateway de pagamento (chave pública)
+EXPO_PUBLIC_PAYMENT_GATEWAY_KEY=sua_chave_publica
 ```
 
-Em seguida, rode o app:
+> Use o IP local da máquina (não `localhost`) para que o dispositivo físico consiga alcançar a API. **Nunca versione o arquivo `.env` com credenciais reais.**
 
-```sh
-# Usando npm
-npm run ios
+---
 
-# OU usando Yarn
-yarn ios
+## Estrutura do Projeto
+
+```
+app/                        # Expo Router — rotas e layouts (file-based)
+├── (consumer)/             # Grupo de rotas do consumidor
+│   ├── (tabs)/             # Tab bar — Home, Busca, Carrinho, Pedidos, Perfil
+│   │   ├── index.tsx       # Home — banners, categorias e lojas abertas
+│   │   ├── search.tsx      # Busca e filtros
+│   │   ├── cart.tsx        # Carrinho
+│   │   ├── orders.tsx      # Pedidos e histórico
+│   │   └── profile.tsx     # Perfil do consumidor
+│   ├── product/[id].tsx    # Detalhe do produto
+│   ├── store/[id].tsx      # Perfil da loja
+│   └── checkout.tsx        # Checkout e pagamento
+├── (deliverer)/            # Grupo de rotas do entregador
+│   └── (tabs)/             # Tab bar — Entregas, Histórico, Perfil
+├── auth/                   # Login, registro e recuperação de senha
+│   ├── login.tsx
+│   ├── register.tsx
+│   └── forgot-password.tsx
+├── onboarding.tsx          # Fluxo de onboarding (4 telas)
+└── _layout.tsx             # Layout raiz com providers globais
+
+assets/
+├── fonts/                  # Poppins (pesos 200–700) copiados localmente
+└── icons/                  # Ícones da tab bar (PNG, gerados via SVG)
+
+src/
+├── components/
+│   └── ui/                 # Componentes reutilizáveis (botões, cards, inputs)
+├── features/               # Módulos por funcionalidade
+│   ├── auth/
+│   ├── catalog/
+│   ├── cart/
+│   ├── orders/
+│   ├── delivery/
+│   └── profile/
+├── hooks/                  # Custom hooks
+├── services/               # Instâncias Axios e chamadas à API
+├── types/                  # Tipos e interfaces TypeScript globais
+└── utils/                  # Funções utilitárias
 ```
 
-Se tudo estiver configurado corretamente, o app deve abrir no Emulador Android, no Simulador iOS ou no seu dispositivo conectado.
+---
 
-> **Dica**: você também pode rodar o app diretamente pelo Android Studio ou pelo Xcode.
+## Telas Implementadas
 
-## Passo 4: Modificar o app
+| Tela | Perfil | Status |
+|---|---|---|
+| Onboarding (4 telas) | Consumidor | ✅ Concluído |
+| Login | Ambos | ✅ Concluído |
+| Registro | Consumidor | ✅ Concluído |
+| Home | Consumidor | ✅ Concluído |
+| Pedidos | Consumidor | ✅ Concluído |
+| Perfil | Consumidor | ✅ Concluído |
 
-Agora que o app está rodando, é hora de fazer alterações!
+---
 
-Abra o `App.tsx` no seu editor de preferência e edite à vontade. Ao salvar, o app atualiza automaticamente graças ao [Fast Refresh](https://reactnative.dev/docs/fast-refresh).
+## Compatibilidade
 
-Quando precisar recarregar do zero (por exemplo, para resetar o estado do app), faça um reload completo:
+| Plataforma | Versão mínima |
+|---|---|
+| Android | 8.0 (API 26) |
+| iOS | 13.0 |
 
-- **Android**: pressione a tecla <kbd>R</kbd> duas vezes ou selecione **"Reload"** no **Dev Menu**, acessado via <kbd>Ctrl</kbd> + <kbd>M</kbd> (Windows/Linux) ou <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (macOS).
-- **iOS**: pressione <kbd>R</kbd> no Simulador iOS.
+---
 
-## Parabéns! :tada:
+## Build de Produção
 
-Você rodou e modificou seu app React Native com sucesso. :partying_face:
+O projeto utiliza **EAS Build** (Expo Application Services) para gerar os binários de produção:
 
-# Solução de Problemas
+```bash
+# Instale o EAS CLI
+npm install -g eas-cli
 
-Se algo não funcionar nos passos acima, consulte a página de [Troubleshooting](https://reactnative.dev/docs/troubleshooting).
+# Configure o projeto (necessário apenas uma vez)
+eas build:configure
 
-Alguns comandos úteis quando algo dá errado:
+# Build para Android (.apk / .aab)
+eas build --platform android
 
-```sh
-# Limpar o cache do Metro
-npm start -- --reset-cache
-
-# Limanr o build do Android
-cd android && ./gradlew clean && cd ..
+# Build para iOS (.ipa)
+eas build --platform ios
 ```
 
-# Saiba Mais
+---
 
-Para aprender mais sobre React Native, confira os recursos abaixo:
+## Outros Repositórios
 
-- [Site do React Native](https://reactnative.dev) — visão geral do React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) — uma **introdução** ao React Native e como configurar o ambiente.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) — um **tour guiado** pelos **fundamentos** do React Native.
-- [Blog](https://reactnative.dev/blog) — os **posts** oficiais mais recentes do React Native.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) — o **repositório** open source no GitHub do React Native.
+| Repositório | Descrição |
+|---|---|
+| [vitryne-backend](https://github.com/Vitryne/vitryne-backend) | API REST — Java + Spring Boot |
+| [vitryne-web](https://github.com/Vitryne/vitryne-web) | Portal web — Next.js + TypeScript |
+| [vitryne-docs](https://github.com/Vitryne/vitryne-docs) | Documentação técnica e acadêmica |
+
+---
+
+<details>
+<summary>Contexto acadêmico</summary>
+
+O `vitryne-mobile` é desenvolvido como parte do Trabalho de Conclusão de Curso da turma de 2026 da **Escola de TI**. Para os artefatos acadêmicos completos (diagramas UML, requisitos, regras de negócio e fluxos), consulte [vitryne-docs](https://github.com/Vitryne/vitryne-docs).
+
+</details>
