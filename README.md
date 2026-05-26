@@ -91,44 +91,22 @@ EXPO_PUBLIC_PAYMENT_GATEWAY_KEY=sua_chave_publica
 ## Estrutura do Projeto
 
 ```
-app/                        # Expo Router — rotas e layouts (file-based)
-├── (consumer)/             # Grupo de rotas do consumidor
-│   ├── (tabs)/             # Tab bar — Home, Busca, Carrinho, Pedidos, Perfil
-│   │   ├── index.tsx       # Home — banners, categorias e lojas abertas
-│   │   ├── search.tsx      # Busca e filtros
-│   │   ├── cart.tsx        # Carrinho
-│   │   ├── orders.tsx      # Pedidos e histórico
-│   │   └── profile.tsx     # Perfil do consumidor
-│   ├── product/[id].tsx    # Detalhe do produto
-│   ├── store/[id].tsx      # Perfil da loja
-│   └── checkout.tsx        # Checkout e pagamento
-├── (deliverer)/            # Grupo de rotas do entregador
-│   └── (tabs)/             # Tab bar — Entregas, Histórico, Perfil
-├── auth/                   # Login, registro e recuperação de senha
-│   ├── login.tsx
-│   ├── register.tsx
-│   └── forgot-password.tsx
-├── onboarding.tsx          # Fluxo de onboarding (4 telas)
-└── _layout.tsx             # Layout raiz com providers globais
-
-assets/
-├── fonts/                  # Poppins (pesos 200–700) copiados localmente
-└── icons/                  # Ícones da tab bar (PNG, gerados via SVG)
-
-src/
-├── components/
-│   └── ui/                 # Componentes reutilizáveis (botões, cards, inputs)
-├── features/               # Módulos por funcionalidade
-│   ├── auth/
-│   ├── catalog/
-│   ├── cart/
-│   ├── orders/
-│   ├── delivery/
-│   └── profile/
-├── hooks/                  # Custom hooks
-├── services/               # Instâncias Axios e chamadas à API
-├── types/                  # Tipos e interfaces TypeScript globais
-└── utils/                  # Funções utilitárias
+src/                      # ou "app", veja a nota no final
+├── api/                  # cliente HTTP, endpoints, chamadas
+├── assets/               # imagens, fontes, ícones
+├── components/           # componentes globais reutilizáveis
+├── hooks/                # hooks globais
+├── navigation/           # navigators, rotas e tipos de rota
+├── screens/
+│   ├── Home/
+│   │   ├── index.tsx     # a tela em si
+│   │   ├── components/   # componentes SÓ da Home
+│   │   ├── styles.ts     # estilos SÓ da Home
+│   │   └── types.ts      # tipos SÓ da Home
+│   └── Login/
+│       └── LoginScreen.tsx   # tela simples = só um arquivo, sem pasta
+├── styles/               # tema global: cores, espaçamentos, tipografia
+└── types/                # tipos globais (User, ApiResponse, etc.)
 ```
 
 ---
