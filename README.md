@@ -55,11 +55,8 @@ cd vitryne-mobile
 # Instale as dependências
 npm install
 
-# Configure as variáveis de ambiente
-cp .env.example .env
-
-# Inicie o servidor de desenvolvimento
-npx expo start
+# Para iniciar o programa
+npm run android
 ```
 
 Com o servidor rodando, escaneie o QR Code com o **Expo Go** no celular ou pressione:
