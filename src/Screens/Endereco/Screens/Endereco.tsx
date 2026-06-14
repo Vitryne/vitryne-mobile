@@ -2,15 +2,15 @@ import { Ionicons } from "@expo/vector-icons";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useState } from "react";
 import { Pressable, ScrollView, Text, View } from "react-native";
-import { Stepper } from "../../../Componets/Stepper/Stepper";
-import { colors, commonStyles } from "../../../Styles/commonStyles";
-import { RootStackParamList } from "../../../Types/navigation";
-import { CardEndereco } from "../Componets/CardEndereco/CardEndereco";
+import { Stepper } from "../../../components/stepper/Stepper";
+import { colors, commonStyles } from "../../../styles/commonStyles";
+import { RootStackParamList } from "../../../types/navigation";
+import { CardAddress } from "../components/telaEndereco/enderecoCard";
 import { styles } from "./styles";
 
-type Props = NativeStackScreenProps<RootStackParamList, "Endereco">;
+type Props = NativeStackScreenProps<RootStackParamList, "Address">;
 
-const enderecos = [
+const endereco = [
   {
     id: "1",
     titulo: "Casa",
@@ -34,7 +34,7 @@ const tempos = [
 
 const steps = ["Endereço", "Pagamento", "Confirmação"];
 
-export function Endereco({ navigation }: Props) {
+export function Address({ navigation }: Props) {
   const [selecionado, setSelecionado] = useState("1");
 
   return (
@@ -44,8 +44,8 @@ export function Endereco({ navigation }: Props) {
       <ScrollView contentContainerStyle={commonStyles.scrollContent}>
         <Text style={commonStyles.sectionLabel}>SELECIONE UM ENDEREÇO</Text>
 
-        {enderecos.map((e) => (
-          <CardEndereco
+        {endereco.map((e) => (
+          <CardAddress
             key={e.id}
             titulo={e.titulo}
             tag={e.tag}
@@ -56,7 +56,7 @@ export function Endereco({ navigation }: Props) {
           />
         ))}
 
-        {/* Box de aviso (no real seria condicional ao carrinho/seleção) */}
+        {/* Box de aviso (no real seria condicional ao cart/seleção) */}
         <View style={styles.alertBox}>
           <Ionicons
             name="alert-circle-outline"
@@ -90,7 +90,7 @@ export function Endereco({ navigation }: Props) {
       <View style={styles.footer}>
         <Pressable
           style={commonStyles.button}
-          onPress={() => navigation.navigate("Pagamento")}
+          onPress={() => navigation.navigate("Payment")}
         >
           <Text style={commonStyles.buttonText}>Continuar para pagamento</Text>
         </Pressable>

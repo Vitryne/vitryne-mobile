@@ -1,6 +1,6 @@
 import { Pressable, Text } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { colors } from '../Styles/commonStyles';
+import { colors } from '../styles/commonStyles';
 import { Entypo } from '@expo/vector-icons';
 
 export function HeaderBack() {

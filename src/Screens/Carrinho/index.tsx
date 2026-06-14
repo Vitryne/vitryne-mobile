@@ -1,1 +1,1 @@
-export { MenuCarrinho } from './Screens/MenuCarrinho';
+export { MenuCarrinho } from './screens/menuCarrinho';

@@ -1,7 +1,7 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { registerRootComponent } from "expo";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import { Rotas } from "./Navigation/rotas";
+import { Rotas } from "./navigation/routes";
 
 function App() {
   return (

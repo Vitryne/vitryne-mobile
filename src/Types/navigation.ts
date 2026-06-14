@@ -1,7 +1,7 @@
 export type RootStackParamList = {
-  MenuCarrinho: undefined;
-  Endereco: undefined;
-  Pagamento: undefined;
-  PaguePix: { orderId: string };
-  PedidoConfirmado: { orderId: string };
+  CartMenu: undefined;
+  Address: undefined;
+  Payment: undefined;
+  PayPix: { orderId: string };
+  OrderConfirmed: { orderId: string };
 };

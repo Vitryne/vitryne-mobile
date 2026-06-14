@@ -1,1 +1,1 @@
-export { PedidoConfirmado } from './Screens/PedidoConfirmado';
+export { OrderConfirmed } from './screens/confirmacaoPedido';

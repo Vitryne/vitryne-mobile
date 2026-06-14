@@ -1,18 +1,18 @@
 import { Ionicons } from "@expo/vector-icons";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { Pressable, ScrollView, Text, View } from "react-native";
-import { colors, commonStyles } from "../../../Styles/commonStyles";
-import { RootStackParamList } from "../../../Types/navigation";
+import { colors, commonStyles } from "../../../styles/commonStyles";
+import { RootStackParamList } from "../../../types/navigation";
 import { styles } from "./styles";
 
-type Props = NativeStackScreenProps<RootStackParamList, "PedidoConfirmado">;
+type Props = NativeStackScreenProps<RootStackParamList, "OrderConfirmed">;
 
 const lojas = [
   { id: "1", nome: "Atelier Lua · 2 itens", status: "Aguardando confirmação" },
   { id: "2", nome: "Casa Verão · 1 item", status: "Aguardando confirmação" },
 ];
 
-export function PedidoConfirmado({ navigation, route }: Props) {
+export function OrderConfirmed({ navigation, route }: Props) {
   const { orderId } = route.params;
 
   return (
@@ -25,7 +25,7 @@ export function PedidoConfirmado({ navigation, route }: Props) {
         <Text style={styles.title}>Pedido confirmado!</Text>
         <Text style={styles.subtitle}>
           Estamos avisando as lojas. Você receberá uma notificação assim que
-          cada pedido for confirmado.
+          cada order for confirmado.
         </Text>
 
         <View style={[commonStyles.card, styles.protocolCard]}>

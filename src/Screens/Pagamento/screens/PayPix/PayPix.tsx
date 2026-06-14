@@ -1,14 +1,14 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { Pressable, ScrollView, Text, View } from "react-native";
-import { commonStyles } from "../../../../Styles/commonStyles";
-import { RootStackParamList } from "../../../../Types/navigation";
+import { commonStyles } from "../../../../styles/commonStyles";
+import { RootStackParamList } from "../../../../types/navigation";
 import { styles } from "./styles";
 
-type Props = NativeStackScreenProps<RootStackParamList, "PaguePix">;
+type Props = NativeStackScreenProps<RootStackParamList, "PayPix">;
 
 const codigoPix = "00020126360014BR.GOV.BCB.PIX0114+5511996412...";
 
-export function PaguePix({ navigation, route }: Props) {
+export function PayPix({ navigation, route }: Props) {
   const { orderId } = route.params;
 
   return (
@@ -35,16 +35,16 @@ export function PaguePix({ navigation, route }: Props) {
         </View>
 
         <Text style={styles.hint}>
-          Após o pagamento, você é redirecionado automaticamente.{"\n"}Não feche
+          Após o payment, você é redirecionado automaticamente.{"\n"}Não feche
           este app.
         </Text>
 
-        {/* botão mock pra simular o pagamento concluído */}
+        {/* botão mock pra simular o payment concluído */}
         <Pressable
           style={styles.button}
-          onPress={() => navigation.navigate("PedidoConfirmado", { orderId })}
+          onPress={() => navigation.navigate("OrderConfirmed", { orderId })}
         >
-          <Text style={commonStyles.buttonText}>Simular pagamento</Text>
+          <Text style={commonStyles.buttonText}>Simular payment</Text>
         </Pressable>
       </ScrollView>
     </View>

@@ -3,7 +3,7 @@ import { styles } from "./styles";
 
 type Tag = { texto: string; tipo: "padrao" | "alerta" };
 
-type CardEnderecoProps = {
+type CardAddressProps = {
   titulo: string;
   tag?: Tag;
   linha1: string;
@@ -12,14 +12,14 @@ type CardEnderecoProps = {
   onPress: () => void;
 };
 
-export function CardEndereco({
+export function CardAddress({
   titulo,
   tag,
   linha1,
   linha2,
   selecionado,
   onPress,
-}: CardEnderecoProps) {
+}: CardAddressProps) {
   return (
     <Pressable
       style={[styles.card, selecionado && styles.cardSelecionado]}

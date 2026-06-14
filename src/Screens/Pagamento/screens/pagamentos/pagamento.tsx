@@ -2,13 +2,13 @@ import { Ionicons } from "@expo/vector-icons";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useState } from "react";
 import { Pressable, ScrollView, Text, View } from "react-native";
-import { Stepper } from "../../../../Componets/Stepper/Stepper";
-import { colors, commonStyles } from "../../../../Styles/commonStyles";
-import { RootStackParamList } from "../../../../Types/navigation";
-import { OpcaoPagamento } from "../../Components/OpcaoPagamento/OpcaoPagamento";
+import { Stepper } from "../../../../components/stepper/Stepper";
+import { colors, commonStyles } from "../../../../styles/commonStyles";
+import { RootStackParamList } from "../../../../types/navigation";
+import { PaymentOption } from "../../components/opcoesPagamento/opcoesPagamento";
 import { styles } from "./styles";
 
-type Props = NativeStackScreenProps<RootStackParamList, "Pagamento">;
+type Props = NativeStackScreenProps<RootStackParamList, "Payment">;
 
 const formas = [
   {
@@ -34,17 +34,17 @@ const formas = [
   },
 ];
 
-const steps = ["Endereço", "Pagamento", "Confirmação"];
+const steps = ["Endereço", "Payment", "Confirmação"];
 
-export function Pagamento({ navigation }: Props) {
+export function Payment({ navigation }: Props) {
   const [forma, setForma] = useState("pix");
 
   function confirmar() {
     const orderId = "VTR-2024-08412"; // mock
     if (forma === "pix") {
-      navigation.navigate("PaguePix", { orderId });
+      navigation.navigate("PayPix", { orderId });
     } else {
-      navigation.navigate("PedidoConfirmado", { orderId });
+      navigation.navigate("OrderConfirmed", { orderId });
     }
   }
 
@@ -56,7 +56,7 @@ export function Pagamento({ navigation }: Props) {
         <Text style={commonStyles.sectionLabel}>FORMA DE PAGAMENTO</Text>
 
         {formas.map((f) => (
-          <OpcaoPagamento
+          <PaymentOption
             key={f.id}
             titulo={f.titulo}
             desc={f.desc}
@@ -103,7 +103,7 @@ export function Pagamento({ navigation }: Props) {
               size={18}
               color={colors.white}
             />
-            <Text style={commonStyles.buttonText}>Confirmar pedido</Text>
+            <Text style={commonStyles.buttonText}>Confirmar order</Text>
           </View>
         </Pressable>
       </View>

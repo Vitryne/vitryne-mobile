@@ -1,9 +1,9 @@
 import { FontAwesome6, Ionicons } from "@expo/vector-icons";
 import { Pressable, Text, View } from "react-native";
-import { colors } from "../../../../Styles/commonStyles";
+import { colors } from "../../../../styles/commonStyles";
 import { styles } from "./styles";
 
-type OpcaoPagamentoProps = {
+type PaymentOptionProps = {
   titulo: string;
   desc: string;
   icone: string;
@@ -12,14 +12,14 @@ type OpcaoPagamentoProps = {
   onPress: () => void;
 };
 
-export function OpcaoPagamento({
+export function PaymentOption({
   titulo,
   desc,
   icone,
   familia,
   selecionado,
   onPress,
-}: OpcaoPagamentoProps) {
+}: PaymentOptionProps) {
   return (
     <Pressable
       style={[styles.option, selecionado && styles.optionSelecionado]}

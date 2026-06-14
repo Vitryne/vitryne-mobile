@@ -1,2 +1,2 @@
-export { Endereco } from "./Screens/Endereco";
+export { Address } from "./screens/endereco";
 

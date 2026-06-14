@@ -1,2 +1,2 @@
-export { Pagamento } from './Screens/Pagamento/Pagamento';
-export { PaguePix } from './Screens/PaguePix/PaguePix';
+export { Payment } from './screens/pagamentos/pagamento';
+export { PayPix } from './screens/PayPix/PayPix';
