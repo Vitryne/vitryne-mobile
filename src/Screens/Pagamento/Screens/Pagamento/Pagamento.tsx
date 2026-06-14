@@ -2,7 +2,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useState } from "react";
 import { Pressable, ScrollView, Text, View } from "react-native";
-import { Stepper } from "../../../../Componets/Stepper/Stepper";
+import { Stepper } from "../../../../Components/Stepper/Stepper";
 import { colors, commonStyles } from "../../../../Styles/commonStyles";
 import { RootStackParamList } from "../../../../Types/navigation";
 import { OpcaoPagamento } from "../../Components/OpcaoPagamento/OpcaoPagamento";
