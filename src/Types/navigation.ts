@@ -4,4 +4,5 @@ export type RootStackParamList = {
   Pagamento: undefined;
   PaguePix: { orderId: string };
   PedidoConfirmado: { orderId: string };
+  Produto: undefined;
 };

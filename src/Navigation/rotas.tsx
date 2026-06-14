@@ -50,6 +50,12 @@ export function Rotas() {
         component={PedidoConfirmado}
         options={{ title: "Pedido confirmado" }}
       />
+      <Stack.Screen
+        name="Produto"
+        component={Produto}
+        options={{ title: "Produto" }}
+      />
+      
     </Stack.Navigator>
   );
 }
