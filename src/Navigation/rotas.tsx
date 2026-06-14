@@ -7,13 +7,14 @@ import { MenuCarrinho } from "../Screens/Carrinho";
 import { Endereco } from "../Screens/Endereco";
 import { Pagamento, PaguePix } from "../Screens/Pagamento";
 import { PedidoConfirmado } from "../Screens/Pedido";
+import { Produto } from "../Screens/Produto";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export function Rotas() {
   return (
     <Stack.Navigator
-      initialRouteName="MenuCarrinho"
+      initialRouteName="Produto"
       screenOptions={{
         headerStyle: { backgroundColor: colors.background },
         headerTintColor: colors.text,
@@ -55,7 +56,6 @@ export function Rotas() {
         component={Produto}
         options={{ title: "Produto" }}
       />
-      
     </Stack.Navigator>
   );
 }
