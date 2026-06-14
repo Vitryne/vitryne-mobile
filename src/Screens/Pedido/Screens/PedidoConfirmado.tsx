@@ -7,7 +7,6 @@ import { styles } from "./styles";
 
 type Props = NativeStackScreenProps<RootStackParamList, "PedidoConfirmado">;
 
-// mock
 const lojas = [
   { id: "1", nome: "Atelier Lua · 2 itens", status: "Aguardando confirmação" },
   { id: "2", nome: "Casa Verão · 1 item", status: "Aguardando confirmação" },

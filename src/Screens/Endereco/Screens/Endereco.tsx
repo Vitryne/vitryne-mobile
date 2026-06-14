@@ -2,13 +2,14 @@ import { Ionicons } from "@expo/vector-icons";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useState } from "react";
 import { Pressable, ScrollView, Text, View } from "react-native";
+import { Stepper } from "../../../Componets/Stepper/Stepper";
 import { colors, commonStyles } from "../../../Styles/commonStyles";
 import { RootStackParamList } from "../../../Types/navigation";
+import { CardEndereco } from "../Componets/CardEndereco/CardEndereco";
 import { styles } from "./styles";
 
 type Props = NativeStackScreenProps<RootStackParamList, "Endereco">;
 
-// mock
 const enderecos = [
   {
     id: "1",
@@ -38,66 +39,22 @@ export function Endereco({ navigation }: Props) {
 
   return (
     <View style={commonStyles.screen}>
-      {/* Stepper com linha conectando */}
-      <View style={styles.stepper}>
-        {steps.map((label, i) => {
-          const ativo = i === 0;
-          return (
-            <View
-              key={label}
-              style={[styles.step, { flex: i < steps.length - 1 ? 1 : 0 }]}
-            >
-              <View
-                style={[
-                  styles.stepBadge,
-                  ativo ? styles.stepBadgeActive : styles.stepBadgeIdle,
-                ]}
-              >
-                <Text style={styles.stepBadgeText}>{i + 1}</Text>
-              </View>
-              <Text style={[styles.stepLabel, ativo && styles.stepLabelActive]}>
-                {label}
-              </Text>
-              {i < steps.length - 1 && <View style={styles.stepLine} />}
-            </View>
-          );
-        })}
-      </View>
+      <Stepper passos={steps} stepAtual={0} />
 
       <ScrollView contentContainerStyle={commonStyles.scrollContent}>
         <Text style={commonStyles.sectionLabel}>SELECIONE UM ENDEREÇO</Text>
 
-        {enderecos.map((e) => {
-          const sel = selecionado === e.id;
-          return (
-            <Pressable
-              key={e.id}
-              style={[styles.addressCard, sel && styles.addressCardSelected]}
-              onPress={() => setSelecionado(e.id)}
-            >
-              <View style={[styles.radio, sel && styles.radioSelected]}>
-                {sel && <View style={styles.radioDot} />}
-              </View>
-              <View style={{ flex: 1 }}>
-                <View style={[commonStyles.row, { gap: 8 }]}>
-                  <Text style={styles.addressTitle}>{e.titulo}</Text>
-                  <Text
-                    style={[
-                      styles.tag,
-                      e.tag.tipo === "padrao"
-                        ? styles.tagPadrao
-                        : styles.tagAlerta,
-                    ]}
-                  >
-                    {e.tag.texto}
-                  </Text>
-                </View>
-                <Text style={styles.addressText}>{e.linha1}</Text>
-                <Text style={styles.addressText}>{e.linha2}</Text>
-              </View>
-            </Pressable>
-          );
-        })}
+        {enderecos.map((e) => (
+          <CardEndereco
+            key={e.id}
+            titulo={e.titulo}
+            tag={e.tag}
+            linha1={e.linha1}
+            linha2={e.linha2}
+            selecionado={selecionado === e.id}
+            onPress={() => setSelecionado(e.id)}
+          />
+        ))}
 
         {/* Box de aviso (no real seria condicional ao carrinho/seleção) */}
         <View style={styles.alertBox}>

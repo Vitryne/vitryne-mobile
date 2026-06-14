@@ -1,14 +1,15 @@
-import { FontAwesome6, Ionicons } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useState } from "react";
 import { Pressable, ScrollView, Text, View } from "react-native";
+import { Stepper } from "../../../../Componets/Stepper/Stepper";
 import { colors, commonStyles } from "../../../../Styles/commonStyles";
 import { RootStackParamList } from "../../../../Types/navigation";
+import { OpcaoPagamento } from "../../Components/OpcaoPagamento/OpcaoPagamento";
 import { styles } from "./styles";
 
 type Props = NativeStackScreenProps<RootStackParamList, "Pagamento">;
 
-// mock
 const formas = [
   {
     id: "pix",
@@ -34,7 +35,6 @@ const formas = [
 ];
 
 const steps = ["Endereço", "Pagamento", "Confirmação"];
-const stepAtual = 1; // índice 0-based: Pagamento
 
 export function Pagamento({ navigation }: Props) {
   const [forma, setForma] = useState("pix");
@@ -50,70 +50,22 @@ export function Pagamento({ navigation }: Props) {
 
   return (
     <View style={commonStyles.screen}>
-      {/* Stepper */}
-      <View style={styles.stepper}>
-        {steps.map((label, i) => {
-          const ativo = i <= stepAtual;
-          const linhaAtiva = i < stepAtual;
-          return (
-            <View
-              key={label}
-              style={[styles.step, { flex: i < steps.length - 1 ? 1 : 0 }]}
-            >
-              <View
-                style={[
-                  styles.stepBadge,
-                  ativo ? styles.stepBadgeActive : styles.stepBadgeIdle,
-                ]}
-              >
-                <Text style={styles.stepBadgeText}>{i + 1}</Text>
-              </View>
-              <Text style={[styles.stepLabel, ativo && styles.stepLabelActive]}>
-                {label}
-              </Text>
-              {i < steps.length - 1 && (
-                <View
-                  style={[styles.stepLine, linhaAtiva && styles.stepLineActive]}
-                />
-              )}
-            </View>
-          );
-        })}
-      </View>
+      <Stepper passos={steps} stepAtual={1} />
 
       <ScrollView contentContainerStyle={commonStyles.scrollContent}>
         <Text style={commonStyles.sectionLabel}>FORMA DE PAGAMENTO</Text>
 
-        {formas.map((f) => {
-          const sel = forma === f.id;
-          return (
-            <Pressable
-              key={f.id}
-              style={[styles.option, sel && styles.optionSelected]}
-              onPress={() => setForma(f.id)}
-            >
-              <View style={[styles.radio, sel && styles.radioSelected]}>
-                {sel && <View style={styles.radioDot} />}
-              </View>
-              <View style={styles.optionIcon}>
-                {f.familia === "fa6" ? (
-                  <FontAwesome6
-                    name={f.icone}
-                    size={20}
-                    color={colors.primary}
-                    iconStyle="brand"
-                  />
-                ) : (
-                  <Ionicons name={f.icone} size={20} color={colors.primary} />
-                )}
-              </View>
-              <View style={{ flex: 1 }}>
-                <Text style={styles.optionTitle}>{f.titulo}</Text>
-                <Text style={styles.optionDesc}>{f.desc}</Text>
-              </View>
-            </Pressable>
-          );
-        })}
+        {formas.map((f) => (
+          <OpcaoPagamento
+            key={f.id}
+            titulo={f.titulo}
+            desc={f.desc}
+            icone={f.icone}
+            familia={f.familia}
+            selecionado={forma === f.id}
+            onPress={() => setForma(f.id)}
+          />
+        ))}
 
         <Pressable style={styles.addBtn}>
           <Text style={styles.addBtnText}>+ Novo cartão</Text>
