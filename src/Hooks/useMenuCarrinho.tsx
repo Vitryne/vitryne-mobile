@@ -8,7 +8,7 @@ import {
 import { ApiError } from "../Api/apiConfig";
 
 // Sem autenticação ainda — usuarioId fixo. Trocar quando o login (JWT) entrar.
-const USUARIO_ID = 3;
+const USUARIO_ID = 1;
 
 export function fmt(value: number): string {
   return value.toLocaleString("pt-BR", {

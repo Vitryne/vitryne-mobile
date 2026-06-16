@@ -29,6 +29,7 @@ export function adicionarItem(
   estoqueId: number,
   quantidade: number,
 ): Promise<CarrinhoResponseDTO> {
+  console.log(`[DEBUG] Tentando adicionar item. URL: /carrinho/${usuarioId}/itens`, { estoqueId, quantidade });
   return apiFetch<CarrinhoResponseDTO>(`/carrinho/${usuarioId}/itens`, {
     method: "POST",
     body: { estoqueId, quantidade },

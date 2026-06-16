@@ -1,4 +1,5 @@
 export interface TamanhoDisponivelDTO {
+  estoqueId: number;
   tamanho: string;
   quantidade: number;
   disponivel: boolean;

@@ -2,12 +2,14 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useState } from "react";
 import {
   ActivityIndicator,
+  Alert,
   Image,
   Pressable,
   ScrollView,
   Text,
   View,
 } from "react-native";
+import { adicionarItem } from "../../../Api/MenuCarrinho"; // Ajuste este caminho
 import { useProdutoById } from "../../../Hooks/useProduto";
 import { colors } from "../../../Styles/commonStyles";
 import { RootStackParamList } from "../../../Types/navigation";
@@ -23,6 +25,7 @@ export function Produto({ route, navigation }: Props) {
   const produtoId = route.params?.id ?? 1;
   const { produto, loading, error, refetch } = useProdutoById(produtoId);
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
+  const [adicionando, setAdicionando] = useState(false);
 
   if (loading) {
     return (
@@ -74,6 +77,32 @@ export function Produto({ route, navigation }: Props) {
   const tamanhoSelecionadoInfo = produto.tamanhosDisponiveis.find(
     (t) => t.tamanho === selectedSize,
   );
+  
+  const handleAdicionarAoCarrinho = async () => {
+  if (!selectedSize) {
+    Alert.alert("Selecione um tamanho", "Por favor, selecione um tamanho antes de adicionar ao carrinho.");
+    return;
+  }
+
+  const tamanhoInfo = produto.tamanhosDisponiveis.find(
+    (t) => t.tamanho === selectedSize
+  );
+
+  if (!tamanhoInfo || !tamanhoInfo.disponivel) {
+    Alert.alert("Tamanho indisponível", "Este tamanho não está disponível no momento.");
+    return;
+  }
+
+  try {
+    setAdicionando(true);
+    await adicionarItem(1, tamanhoInfo.estoqueId, 1); // usuarioId fixo por enquanto (sem auth)
+    navigation.navigate("MenuCarrinho");
+  } catch (error) {
+    Alert.alert("Erro", "Não foi possível adicionar o item ao carrinho. Tente novamente.");
+  } finally {
+    setAdicionando(false);
+  }
+};
 
   return (
     <View style={styles.container}>
@@ -231,10 +260,15 @@ export function Produto({ route, navigation }: Props) {
           <Text style={{ fontSize: 20 }}>♡</Text>
         </Pressable>
         <Pressable
-          style={styles.addToCartBtn}
-          onPress={() => navigation.navigate("MenuCarrinho")}
+          style={[styles.addToCartBtn, adicionando && { opacity: 0.6 }]}
+          onPress={handleAdicionarAoCarrinho}
+          disabled={adicionando}
         >
-          <Text style={styles.addToCartText}>Adicionar ao carrinho</Text>
+          {adicionando ? (
+            <ActivityIndicator size="small" color={colors.white} />
+          ) : (
+            <Text style={styles.addToCartText}>Adicionar ao carrinho</Text>
+          )}
         </Pressable>
       </View>
     </View>
