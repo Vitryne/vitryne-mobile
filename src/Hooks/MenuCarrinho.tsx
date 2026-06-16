@@ -98,18 +98,18 @@ export function useMenuCarrinho() {
           store.id !== storeId
             ? store
             : {
-                ...store,
-                items: store.items
-                  .map((item) =>
-                    item.id === itemId
-                      ? {
-                          ...item,
-                          quantity: Math.max(0, item.quantity + delta),
-                        }
-                      : item,
-                  )
-                  .filter((i) => i.quantity > 0),
-              },
+              ...store,
+              items: store.items
+                .map((item) =>
+                  item.id === itemId
+                    ? {
+                      ...item,
+                      quantity: Math.max(0, item.quantity + delta),
+                    }
+                    : item,
+                )
+                .filter((i) => i.quantity > 0),
+            },
         )
         .filter((s) => s.items.length > 0),
     );
