@@ -113,7 +113,7 @@ export function Produto({ route, navigation }: Props) {
         {/* Product image area */}
         <View style={styles.imageContainer}>
           {produto.fotosUrls && produto.fotosUrls.length > 0 ? (
-            <Image
+             <Image
               source={{ uri: produto.fotosUrls[0] }}
               style={styles.productImage}
               resizeMode="contain"
@@ -153,6 +153,12 @@ export function Produto({ route, navigation }: Props) {
             </Pressable>
             <Pressable style={styles.iconCircle}>
               <Text style={{ fontSize: 15 }}>⎙</Text>
+            </Pressable>
+            <Pressable
+              style={styles.iconCircle}
+              onPress={() => navigation.navigate("MenuCarrinho")}
+            >
+              <Text style={{ fontSize: 16 }}>🛒</Text>
             </Pressable>
           </View>
         </View>
