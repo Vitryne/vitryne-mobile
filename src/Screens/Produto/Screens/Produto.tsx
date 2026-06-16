@@ -113,11 +113,11 @@ export function Produto({ route, navigation }: Props) {
         {/* Product image area */}
         <View style={styles.imageContainer}>
           {produto.fotosUrls && produto.fotosUrls.length > 0 ? (
-            <Image
-  source={{ uri: "https://picsum.photos/800/800" }}
-  style={styles.productImage}
-  resizeMode="contain"
-/>
+             <Image
+              source={{ uri: produto.fotosUrls[0] }}
+              style={styles.productImage}
+              resizeMode="contain"
+            />
           ) : (
             <View style={[styles.productImage, { justifyContent: "center", alignItems: "center" }]}>
               <Text style={{ fontSize: 48 }}>📷</Text>
