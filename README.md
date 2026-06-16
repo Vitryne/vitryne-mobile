@@ -1,56 +1,190 @@
-# Welcome to your Expo app 👋
+<div align="center">
+    <img src="https://raw.githubusercontent.com/Vitryne/.github/main/assets/logotipoGradiente.png" width="280" />
+    <h1>Aplicativo mobile da plataforma Vitryne</h1>
+    <p>Catálogo, compras e rastreamento de pedidos para consumidores — gestão de entregas para entregadores.</p>
+    <br>
+   
+[![Mobile](https://skillicons.dev/icons?i=react,ts,docker)](https://skillicons.dev)
+</div>
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+---
 
-## Get started
+## Sobre
 
-1. Install dependencies
+O `vitryne-mobile` é o aplicativo mobile da plataforma Vitryne, desenvolvido com React Native e Expo. Serve dois perfis distintos com interfaces separadas:
 
-   ```bash
-   npm install
-   ```
+- **Consumidor** — onboarding, catálogo de lojas locais, busca por proximidade, carrinho, checkout, acompanhamento de pedidos em tempo real e perfil.
+- **Entregador** — disponibilidade online/offline, recebimento e aceite de entregas, confirmação de coleta e entrega com validação por geofencing e histórico de ganhos.
 
-2. Start the app
+A interface consome a API REST do [`vitryne-backend`](https://github.com/Vitryne/vitryne-backend) e se comunica via WebSocket para atualizações em tempo real de status de pedido e rastreamento.
 
-   ```bash
-   npx expo start
-   ```
+---
 
-In the output, you'll find options to open the app in a
+## Stack
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+| Camada | Tecnologia |
+|---|---|
+| Framework | React Native + Expo (SDK 52+) |
+| Linguagem | TypeScript |
+| Navegação | Expo Router (file-based routing) |
+| Fonte | Poppins — `@expo-google-fonts/poppins` |
+| Requisições HTTP | Axios |
+| Tempo real | WebSocket (nativo) |
+| Notificações push | Expo Notifications + FCM |
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+---
 
-## Get a fresh project
+## Pré-requisitos
 
-When you're ready, run:
+- [Node.js 20+](https://nodejs.org/)
+- [npm](https://www.npmjs.com/) ou [yarn](https://yarnpkg.com/)
+- [Expo CLI](https://docs.expo.dev/more/expo-cli/) — `npm install -g expo-cli`
+- [Expo Go](https://expo.dev/go) no dispositivo físico *(para desenvolvimento rápido)*
+- Emulador Android (Android Studio) ou Simulador iOS (Xcode) *(opcional)*
+- [`vitryne-backend`](https://github.com/Vitryne/vitryne-backend) rodando localmente ou em staging
+
+---
+
+## Instalação
 
 ```bash
-npm run reset-project
+# Clone o repositório
+git clone https://github.com/Vitryne/vitryne-mobile.git
+cd vitryne-mobile
+
+# Instale as dependências
+npm install
+
+# Para iniciar o programa
+npm run android
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+Com o servidor rodando, escaneie o QR Code com o **Expo Go** no celular ou pressione:
 
-### Other setup steps
+- `a` para abrir no emulador Android
+- `i` para abrir no simulador iOS
 
-- To set up ESLint for linting, run `npx expo lint`, or follow our guide on ["Using ESLint and Prettier"](https://docs.expo.dev/guides/using-eslint/)
-- If you'd like to set up unit testing, follow our guide on ["Unit Testing with Jest"](https://docs.expo.dev/develop/unit-testing/)
-- Learn more about the TypeScript setup in this template in our guide on ["Using TypeScript"](https://docs.expo.dev/guides/typescript/)
+---
 
-## Learn more
+## Variáveis de Ambiente
 
-To learn more about developing your project with Expo, look at the following resources:
+Crie um arquivo `.env` na raiz do projeto com base no `.env.example`:
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+```env
+# URL base da API
+EXPO_PUBLIC_API_URL=http://192.168.x.x:8080/api/v1
 
-## Join the community
+# URL do WebSocket
+EXPO_PUBLIC_WS_URL=ws://192.168.x.x:8080/ws
 
-Join our community of developers creating universal apps.
+# Gateway de pagamento (chave pública)
+EXPO_PUBLIC_PAYMENT_GATEWAY_KEY=sua_chave_publica
+```
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+> Use o IP local da máquina (não `localhost`) para que o dispositivo físico consiga alcançar a API. **Nunca versione o arquivo `.env` com credenciais reais.**
+
+---
+
+## Estrutura do Projeto
+
+```
+app/                        # Expo Router — rotas e layouts (file-based)
+├── (consumer)/             # Grupo de rotas do consumidor
+│   ├── (tabs)/             # Tab bar — Home, Busca, Carrinho, Pedidos, Perfil
+│   │   ├── index.tsx       # Home — banners, categorias e lojas abertas
+│   │   ├── search.tsx      # Busca e filtros
+│   │   ├── cart.tsx        # Carrinho
+│   │   ├── orders.tsx      # Pedidos e histórico
+│   │   └── profile.tsx     # Perfil do consumidor
+│   ├── product/[id].tsx    # Detalhe do produto
+│   ├── store/[id].tsx      # Perfil da loja
+│   └── checkout.tsx        # Checkout e pagamento
+├── (deliverer)/            # Grupo de rotas do entregador
+│   └── (tabs)/             # Tab bar — Entregas, Histórico, Perfil
+├── auth/                   # Login, registro e recuperação de senha
+│   ├── login.tsx
+│   ├── register.tsx
+│   └── forgot-password.tsx
+├── onboarding.tsx          # Fluxo de onboarding (4 telas)
+└── _layout.tsx             # Layout raiz com providers globais
+
+assets/
+├── fonts/                  # Poppins (pesos 200–700) copiados localmente
+└── icons/                  # Ícones da tab bar (PNG, gerados via SVG)
+
+src/
+├── components/
+│   └── ui/                 # Componentes reutilizáveis (botões, cards, inputs)
+├── features/               # Módulos por funcionalidade
+│   ├── auth/
+│   ├── catalog/
+│   ├── cart/
+│   ├── orders/
+│   ├── delivery/
+│   └── profile/
+├── hooks/                  # Custom hooks
+├── services/               # Instâncias Axios e chamadas à API
+├── types/                  # Tipos e interfaces TypeScript globais
+└── utils/                  # Funções utilitárias
+```
+
+---
+
+## Telas Implementadas
+
+| Tela | Perfil | Status |
+|---|---|---|
+| Onboarding (4 telas) | Consumidor | ✅ Concluído |
+| Login | Ambos | ✅ Concluído |
+| Registro | Consumidor | ✅ Concluído |
+| Home | Consumidor | ✅ Concluído |
+| Pedidos | Consumidor | ✅ Concluído |
+| Perfil | Consumidor | ✅ Concluído |
+
+---
+
+## Compatibilidade
+
+| Plataforma | Versão mínima |
+|---|---|
+| Android | 8.0 (API 26) |
+| iOS | 13.0 |
+
+---
+
+## Build de Produção
+
+O projeto utiliza **EAS Build** (Expo Application Services) para gerar os binários de produção:
+
+```bash
+# Instale o EAS CLI
+npm install -g eas-cli
+
+# Configure o projeto (necessário apenas uma vez)
+eas build:configure
+
+# Build para Android (.apk / .aab)
+eas build --platform android
+
+# Build para iOS (.ipa)
+eas build --platform ios
+```
+
+---
+
+## Outros Repositórios
+
+| Repositório | Descrição |
+|---|---|
+| [vitryne-backend](https://github.com/Vitryne/vitryne-backend) | API REST — Java + Spring Boot |
+| [vitryne-web](https://github.com/Vitryne/vitryne-web) | Portal web — Next.js + TypeScript |
+| [vitryne-docs](https://github.com/Vitryne/vitryne-docs) | Documentação técnica e acadêmica |
+
+---
+
+<details>
+<summary>Contexto acadêmico</summary>
+
+O `vitryne-mobile` é desenvolvido como parte do Trabalho de Conclusão de Curso da turma de 2026 da **Escola de TI**. Para os artefatos acadêmicos completos (diagramas UML, requisitos, regras de negócio e fluxos), consulte [vitryne-docs](https://github.com/Vitryne/vitryne-docs).
+
+</details>
