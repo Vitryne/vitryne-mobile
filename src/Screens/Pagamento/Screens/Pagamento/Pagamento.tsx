@@ -3,6 +3,7 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useState } from "react";
 import { Pressable, ScrollView, Text, View } from "react-native";
 import { Stepper } from "../../../../Components/Stepper/Stepper";
+import { fmt, useMenuCarrinho } from "../../../../Hooks/useMenuCarrinho";
 import { colors, commonStyles } from "../../../../Styles/commonStyles";
 import { RootStackParamList } from "../../../../Types/navigation";
 import { OpcaoPagamento } from "../../Components/OpcaoPagamento/OpcaoPagamento";
@@ -38,11 +39,20 @@ const steps = ["Endereço", "Pagamento", "Confirmação"];
 
 export function Pagamento({ navigation }: Props) {
   const [forma, setForma] = useState("pix");
+  const { total } = useMenuCarrinho();
+
+  const frete = 12.9;
+  const descontoPix = forma === "pix" ? total * 0.05 : 0;
+  const totalFinal = total + frete - descontoPix;
 
   function confirmar() {
-    const orderId = "VTR-2024-08412"; // mock
+    const orderId = "VTR-2024-08412";
+
     if (forma === "pix") {
-      navigation.navigate("PaguePix", { orderId });
+      navigation.navigate("PaguePix", {
+        orderId,
+        total: totalFinal,
+      });
     } else {
       navigation.navigate("PedidoConfirmado", { orderId });
     }
@@ -71,26 +81,31 @@ export function Pagamento({ navigation }: Props) {
           <Text style={styles.addBtnText}>+ Novo cartão</Text>
         </Pressable>
 
-        {/* Resumo */}
         <View style={commonStyles.card}>
           <Text style={styles.summaryTitle}>Resumo</Text>
+
           <View style={styles.summaryRow}>
             <Text style={styles.summaryLabel}>Subtotal</Text>
-            <Text style={styles.summaryValue}>R$ 347,00</Text>
+            <Text style={styles.summaryValue}>{fmt(total)}</Text>
           </View>
+
           <View style={styles.summaryRow}>
             <Text style={styles.summaryLabel}>Frete</Text>
-            <Text style={styles.summaryValue}>R$ 12,90</Text>
+            <Text style={styles.summaryValue}>{fmt(frete)}</Text>
           </View>
-          <View style={styles.summaryRow}>
-            <Text style={styles.summaryLabel}>Desconto PIX (5%)</Text>
-            <Text style={[styles.summaryValue, styles.summaryDiscount]}>
-              - R$ 17,99
-            </Text>
-          </View>
+
+          {forma === "pix" && (
+            <View style={styles.summaryRow}>
+              <Text style={styles.summaryLabel}>Desconto PIX (5%)</Text>
+              <Text style={[styles.summaryValue, styles.summaryDiscount]}>
+                - {fmt(descontoPix)}
+              </Text>
+            </View>
+          )}
+
           <View style={styles.totalRow}>
             <Text style={styles.totalLabel}>Total</Text>
-            <Text style={styles.totalValue}>R$ 341,91</Text>
+            <Text style={styles.totalValue}>{fmt(totalFinal)}</Text>
           </View>
         </View>
       </ScrollView>
