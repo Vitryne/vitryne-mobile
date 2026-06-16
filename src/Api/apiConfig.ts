@@ -1,8 +1,8 @@
 import { Platform } from "react-native";
 
 const HOST = Platform.select({
-  android: "https://chatty-comics-sin.loca.lt", // URL do localtunnel
-  default: "http://localhost:8080",
+  //android: "https://chatty-comics-sin.loca.lt", // URL do localtunnel
+  default: "http://192.168.1.13:8080", //trocar o 192.168.1.13 pelo IP atual da maquina
 });
 
 export const API_BASE_URL = HOST;
