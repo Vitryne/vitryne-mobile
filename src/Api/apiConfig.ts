@@ -1,9 +1,13 @@
 import { Platform } from "react-native";
 
-export const API_BASE_URL = Platform.select({
-  android: "http://10.0.2.2:8080",
+const HOST = Platform.select({
+  android: "https://chatty-comics-sin.loca.lt", // URL do localtunnel
   default: "http://localhost:8080",
 });
+
+export const API_BASE_URL = HOST;
+
+const TIMEOUT_MS = 10000;
 
 export class ApiError extends Error {
   constructor(
@@ -15,21 +19,41 @@ export class ApiError extends Error {
   }
 }
 
-export async function apiFetch<T>(path: string): Promise<T> {
-  const response = await fetch(`${API_BASE_URL}${path}`, {
-    headers: {
-      Accept: "application/json",
-    },
-  });
+export async function apiFetch<T>(
+  path: string,
+  options?: { method?: string; body?: unknown },
+): Promise<T> {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), TIMEOUT_MS);
 
-  if (!response.ok) {
-    const body = await response.json().catch(() => null);
-    throw new ApiError(
-      response.status,
-      body?.message ?? `Erro HTTP ${response.status}`,
-    );
+  try {
+    const response = await fetch(`${API_BASE_URL}${path}`, {
+      method: options?.method ?? "GET",
+      headers: {
+        Accept: "application/json",
+        "bypass-tunnel-reminder": "true",
+        ...(options?.body ? { "Content-Type": "application/json" } : {}),
+      },
+      body: options?.body ? JSON.stringify(options.body) : undefined,
+      signal: controller.signal,
+    });
+
+    if (!response.ok) {
+      const body = await response.json().catch(() => null);
+      throw new ApiError(
+        response.status,
+        body?.message ?? `Erro HTTP ${response.status}`,
+      );
+    }
+
+    return response.json();
+  } catch (e) {
+    if (e instanceof ApiError) throw e;
+    if (e instanceof Error && e.name === "AbortError") {
+      throw new ApiError(0, "Tempo de conexão esgotado.");
+    }
+    throw new ApiError(0, "Falha de conexão com a API.");
+  } finally {
+    clearTimeout(timer);
   }
-
-  return response.json();
 }
-
