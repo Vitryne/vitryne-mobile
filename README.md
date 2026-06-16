@@ -38,8 +38,7 @@ A interface consome a API REST do [`vitryne-backend`](https://github.com/Vitryne
 
 - [Node.js 20+](https://nodejs.org/)
 - [npm](https://www.npmjs.com/) ou [yarn](https://yarnpkg.com/)
-- [Expo CLI](https://docs.expo.dev/more/expo-cli/) — `npm install -g expo-cli`
-- [Expo Go](https://expo.dev/go) no dispositivo físico *(para desenvolvimento rápido)*
+- [Expo](https://expo.dev/go) no dispositivo físico *(para desenvolvimento rápido)*
 - Emulador Android (Android Studio) ou Simulador iOS (Xcode) *(opcional)*
 - [`vitryne-backend`](https://github.com/Vitryne/vitryne-backend) rodando localmente ou em staging
 
@@ -56,76 +55,99 @@ cd vitryne-mobile
 npm install
 
 # Para iniciar o programa
-npm run android
+npm run web ou npm run android
 ```
-
-Com o servidor rodando, escaneie o QR Code com o **Expo Go** no celular ou pressione:
-
-- `a` para abrir no emulador Android
-- `i` para abrir no simulador iOS
-
----
-
-## Variáveis de Ambiente
-
-Crie um arquivo `.env` na raiz do projeto com base no `.env.example`:
-
-```env
-# URL base da API
-EXPO_PUBLIC_API_URL=http://192.168.x.x:8080/api/v1
-
-# URL do WebSocket
-EXPO_PUBLIC_WS_URL=ws://192.168.x.x:8080/ws
-
-# Gateway de pagamento (chave pública)
-EXPO_PUBLIC_PAYMENT_GATEWAY_KEY=sua_chave_publica
-```
-
-> Use o IP local da máquina (não `localhost`) para que o dispositivo físico consiga alcançar a API. **Nunca versione o arquivo `.env` com credenciais reais.**
-
 ---
 
 ## Estrutura do Projeto
 
 ```
-app/                        # Expo Router — rotas e layouts (file-based)
-├── (consumer)/             # Grupo de rotas do consumidor
-│   ├── (tabs)/             # Tab bar — Home, Busca, Carrinho, Pedidos, Perfil
-│   │   ├── index.tsx       # Home — banners, categorias e lojas abertas
-│   │   ├── search.tsx      # Busca e filtros
-│   │   ├── cart.tsx        # Carrinho
-│   │   ├── orders.tsx      # Pedidos e histórico
-│   │   └── profile.tsx     # Perfil do consumidor
-│   ├── product/[id].tsx    # Detalhe do produto
-│   ├── store/[id].tsx      # Perfil da loja
-│   └── checkout.tsx        # Checkout e pagamento
-├── (deliverer)/            # Grupo de rotas do entregador
-│   └── (tabs)/             # Tab bar — Entregas, Histórico, Perfil
-├── auth/                   # Login, registro e recuperação de senha
-│   ├── login.tsx
-│   ├── register.tsx
-│   └── forgot-password.tsx
-├── onboarding.tsx          # Fluxo de onboarding (4 telas)
-└── _layout.tsx             # Layout raiz com providers globais
-
 assets/
-├── fonts/                  # Poppins (pesos 200–700) copiados localmente
-└── icons/                  # Ícones da tab bar (PNG, gerados via SVG)
-
+├── expo.icon/
+│   └── Assets/
+│       └── grid.png
+└── images/
+    ├── android-icon-background.png
+    ├── android-icon-foreground.png
+    ├── android-icon-monochrome.png
+    ├── expo-badge-white.png
+    ├── expo-badge.png
+    ├── expo-logo.png
+    ├── favicon.png
+    ├── icon.png
+    ├── logo-glow.png
+    ├── react-logo.png
+    ├── react-logo@2x.png
+    ├── react-logo@3x.png
+    ├── splash-icon.png
+    ├── tutorial-web.png
+    └── tabIcons/                           # Ícones da tab bar (PNG)
+        ├── explore.png
+        ├── explore@2x.png
+        ├── explore@3x.png
+        ├── home.png
+        ├── home@2x.png
+        └── home@3x.png
 src/
-├── components/
-│   └── ui/                 # Componentes reutilizáveis (botões, cards, inputs)
-├── features/               # Módulos por funcionalidade
-│   ├── auth/
-│   ├── catalog/
-│   ├── cart/
-│   ├── orders/
-│   ├── delivery/
-│   └── profile/
-├── hooks/                  # Custom hooks
-├── services/               # Instâncias Axios e chamadas à API
-├── types/                  # Tipos e interfaces TypeScript globais
-└── utils/                  # Funções utilitárias
+├── Api/
+│   ├── MenuCarrinho.tsx                    # Chamadas à API do carrinho
+│   ├── Produto.ts                          # Chamadas à API de produtos
+│   └── apiConfig.ts                        # Configuração base do Axios/API
+├── Components/
+│   ├── HeaderBack.tsx                      # Componente de cabeçalho com voltar
+│   └── Stepper/                            # Componente de etapas
+│       ├── Stepper.tsx
+│       └── styles.tsx
+├── Hooks/
+│   ├── useMenuCarrinho.tsx                 # Hook customizado do carrinho
+│   └── useProduto.ts                       # Hook customizado de produto
+├── Navigation/
+│   └── rotas.tsx                           # Definição de rotas/navegação
+├── Screens/
+│   ├── Carrinho/                           # Tela do carrinho
+│   │   ├── Screens/
+│   │   │   ├── MenuCarrinho.tsx            # Listagem de itens do carrinho
+│   │   │   └── styles.tsx
+│   │   └── index.tsx
+│   ├── Endereco/                           # Tela de endereço
+│   │   ├── Componets/
+│   │   │   └── CardEndereco/              # Card de endereço salvo
+│   │   │       ├── CardEndereco.tsx
+│   │   │       └── styles.tsx
+│   │   ├── Screens/
+│   │   │   ├── Endereco.tsx               # Tela principal de endereço
+│   │   │   └── styles.tsx
+│   │   └── index.tsx
+│   ├── Pagamento/                          # Tela de pagamento
+│   │   ├── Components/
+│   │   │   └── OpcaoPagamento/            # Componente de opção de pagamento
+│   │   │       ├── OpcaoPagamento.tsx
+│   │   │       └── styles.tsx
+│   │   ├── Screens/
+│   │   │   ├── Pagamento/                 # Seleção de método de pagamento
+│   │   │   │   ├── Pagamento.tsx
+│   │   │   │   └── styles.tsx
+│   │   │   └── PaguePix/                  # Fluxo de pagamento via Pix
+│   │   │       ├── PaguePix.tsx
+│   │   │       └── styles.tsx
+│   │   └── index.tsx
+│   ├── Pedido/                             # Tela de pedido
+│   │   ├── Screens/
+│   │   │   ├── PedidoConfirmado.tsx       # Confirmação de pedido
+│   │   │   └── styles.tsx
+│   │   └── index.tsx
+│   └── Produto/                            # Tela de produto
+│       ├── Screens/
+│       │   ├── Produto.tsx                # Detalhe do produto
+│       │   └── styles.tsx
+│       └── index.tsx
+├── Styles/
+│   └── commonStyles.tsx                    # Estilos globais compartilhados
+├── Types/
+│   ├── Produto.ts                          # Tipos TypeScript de produto
+│   └── navigation.ts                       # Tipos de navegação TypeScript
+└── app.tsx                                 # Entrada principal da aplicação
+
 ```
 
 ---
@@ -149,26 +171,6 @@ src/
 |---|---|
 | Android | 8.0 (API 26) |
 | iOS | 13.0 |
-
----
-
-## Build de Produção
-
-O projeto utiliza **EAS Build** (Expo Application Services) para gerar os binários de produção:
-
-```bash
-# Instale o EAS CLI
-npm install -g eas-cli
-
-# Configure o projeto (necessário apenas uma vez)
-eas build:configure
-
-# Build para Android (.apk / .aab)
-eas build --platform android
-
-# Build para iOS (.ipa)
-eas build --platform ios
-```
 
 ---
 
