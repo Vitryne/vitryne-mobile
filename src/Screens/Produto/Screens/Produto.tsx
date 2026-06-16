@@ -114,10 +114,10 @@ export function Produto({ route, navigation }: Props) {
         <View style={styles.imageContainer}>
           {produto.fotosUrls && produto.fotosUrls.length > 0 ? (
             <Image
-              source={{ uri: produto.fotosUrls[0] }}
-              style={styles.productImage}
-              resizeMode="contain"
-            />
+  source={{ uri: "https://picsum.photos/800/800" }}
+  style={styles.productImage}
+  resizeMode="contain"
+/>
           ) : (
             <View style={[styles.productImage, { justifyContent: "center", alignItems: "center" }]}>
               <Text style={{ fontSize: 48 }}>📷</Text>
@@ -153,6 +153,12 @@ export function Produto({ route, navigation }: Props) {
             </Pressable>
             <Pressable style={styles.iconCircle}>
               <Text style={{ fontSize: 15 }}>⎙</Text>
+            </Pressable>
+            <Pressable
+              style={styles.iconCircle}
+              onPress={() => navigation.navigate("MenuCarrinho")}
+            >
+              <Text style={{ fontSize: 16 }}>🛒</Text>
             </Pressable>
           </View>
         </View>
