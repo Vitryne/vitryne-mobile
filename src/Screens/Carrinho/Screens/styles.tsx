@@ -7,57 +7,22 @@ export const styles = StyleSheet.create({
     gap: spacing.md,
     paddingBottom: 100,
   },
-  warningBanner: {
-    flexDirection: "row",
-    alignItems: "flex-start",
+  centered: {
+    alignItems: "center",
+    justifyContent: "center",
     gap: spacing.sm,
-    backgroundColor: colors.dangerSoft,
-    borderRadius: radius.md,
-    padding: spacing.md,
   },
-  warningText: {
-    fontSize: 13,
-    color: colors.text,
-    lineHeight: 18,
+  emptyText: {
+    fontSize: 14,
+    color: colors.textMuted,
+    textAlign: "center",
   },
-  warningLink: {
-    fontSize: 13,
-    fontWeight: "600",
-    color: colors.danger,
-    marginTop: 4,
-  },
-  storeCard: {
+  itemsCard: {
     backgroundColor: colors.card,
     borderRadius: radius.lg,
     borderWidth: 1,
     borderColor: colors.border,
     padding: spacing.md,
-  },
-  storeHeader: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: spacing.sm,
-    marginBottom: spacing.md,
-  },
-  storeIconBox: {
-    width: 32,
-    height: 32,
-    borderRadius: radius.sm,
-    borderWidth: 1,
-    borderColor: colors.border,
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: colors.white,
-  },
-  storeName: {
-    fontSize: 14,
-    fontWeight: "600",
-    color: colors.text,
-  },
-  storeDelivery: {
-    fontSize: 11,
-    color: colors.textMuted,
-    marginTop: 1,
   },
   itemRow: {
     flexDirection: "row",
@@ -75,37 +40,18 @@ export const styles = StyleSheet.create({
     borderRadius: radius.sm,
     backgroundColor: colors.border,
   },
-  itemImgUnavailable: {
-    opacity: 0.4,
+  itemImgPlaceholder: {
+    alignItems: "center",
+    justifyContent: "center",
   },
   itemInfo: {
     flex: 1,
   },
-  itemNameRow: {
-    flexDirection: "row",
-    alignItems: "flex-start",
-    gap: spacing.xs,
-    flexWrap: "wrap",
-  },
   itemName: {
-    flex: 1,
     fontSize: 14,
     fontWeight: "500",
     color: colors.text,
     lineHeight: 18,
-  },
-  unavailableBadge: {
-    backgroundColor: colors.dangerSoft,
-    borderRadius: radius.sm,
-    paddingHorizontal: 6,
-    paddingVertical: 2,
-    alignSelf: "flex-start",
-  },
-  unavailableBadgeText: {
-    fontSize: 10,
-    fontWeight: "700",
-    color: colors.danger,
-    letterSpacing: 0.3,
   },
   itemSize: {
     fontSize: 12,
@@ -158,45 +104,30 @@ export const styles = StyleSheet.create({
     minWidth: 16,
     textAlign: "center",
   },
+  itemPriceRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: spacing.sm,
+  },
   itemPrice: {
     fontSize: 15,
     fontWeight: "700",
     color: colors.text,
   },
+  removeBtn: {
+    padding: 2,
+  },
   summarySection: {
-    gap: spacing.sm,
     backgroundColor: colors.card,
     borderRadius: radius.lg,
     borderWidth: 1,
     borderColor: colors.border,
     padding: spacing.md,
   },
-  sumRow: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-  sumLabel: {
-    fontSize: 14,
-    color: colors.textMuted,
-  },
-  sumVal: {
-    fontSize: 14,
-    color: colors.text,
-  },
-  sumDiscount: {
-    fontSize: 14,
-    color: colors.success,
-    fontWeight: "500",
-  },
   sumTotalRow: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginTop: spacing.xs,
-    paddingTop: spacing.sm,
-    borderTopWidth: 1,
-    borderTopColor: colors.border,
   },
   sumTotalLabel: {
     fontSize: 16,
